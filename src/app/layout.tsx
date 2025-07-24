@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from '../components/Navbar';
 import { Roboto } from 'next/font/google';
 import './globals.css';
+import LayoutWrap from '../components/Layout1';
 
 export const metadata = {
   title: 'Flipkart Clone',
@@ -19,7 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={`${roboto.className} bg-light`} style={{ minHeight: '100vh' }}>
         <Navbar />
-        <main>{children}</main>
+        <LayoutWrap>{children}</LayoutWrap>
       </body>
     </html>
   );

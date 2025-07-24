@@ -1,8 +1,15 @@
-export interface Product {
+export interface MobileProduct {
   id: string;
   title: string;
   image: string;
-  price: string;
-  rating: string;
-  description: string;
+  rating: number;
+  reviews: string;
+  specs: string[];
+  warranty: string;
+  price: number;
+  originalPrice: number;
+  discount: string;
+  offer?: string;
+  coins?: number; 
+  exchange?: string;
 }

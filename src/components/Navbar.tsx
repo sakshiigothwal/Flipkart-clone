@@ -1,10 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
-
 import Image from "next/image";
+import { useRouter, usePathname } from "next/navigation";
+import { useState } from "react";
 import {
   FaSearch,
   FaUserCircle,
@@ -17,13 +16,26 @@ import {
 export default function Navbar() {
   const pathname = usePathname();
   const isCartPage = pathname === "/cart";
+  const isMobilePage = pathname === "/mobiles";
+
+  const isBlueBg = isCartPage || isMobilePage;
 
   const [showLogin, setShowLogin] = useState(false);
   const [showMore, setShowMore] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const router = useRouter();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchTerm.toLowerCase().includes("mobile")) {
+      router.push("/mobiles");
+    }
+  };
 
   return (
     <nav
-      className={`px-4 py-2 shadow-sm ${isCartPage ? "bg-primary" : "bg-white"}`}
+      className={`px-4 py-2 shadow-sm ${isBlueBg ? "bg-primary" : "bg-white"}`}
       style={{ fontSize: "12px" }}
     >
       <div className="container-fluid">
@@ -37,14 +49,14 @@ export default function Navbar() {
                 height={40}
                 style={{
                   objectFit: "contain",
-                  filter: isCartPage ? "brightness(0) invert(1)" : "none",
+                  filter: isBlueBg ? "brightness(0) invert(1)" : "none",
                 }}
               />
             </Link>
           </div>
 
           <div className="col-md-5">
-            <form className="w-100">
+            <form className="w-100" onSubmit={handleSearch}>
               <div
                 className="d-flex align-items-center rounded px-3 py-2"
                 style={{
@@ -60,11 +72,13 @@ export default function Navbar() {
                 />
                 <input
                   type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Search for Products, Brands and More"
                   className="form-control border-0 shadow-none bg-transparent p-0"
                   style={{
                     fontSize: "14px",
-                    color: isCartPage ? "white" : "black",
+                    color: isBlueBg ? "white" : "black",
                   }}
                 />
               </div>
@@ -83,13 +97,12 @@ export default function Navbar() {
                   style={{
                     fontSize: "16px",
                     padding: "8px 12px",
-                    color: isCartPage ? "white" : "black",
+                    color: isBlueBg ? "white" : "black",
                   }}
                 >
                   <FaUserCircle size={20} />
                   <span className="fw-medium d-flex align-items-center gap-1">
-                    {isCartPage ? "My Account" : "Login"}{" "}
-                    <FaAngleDown size={12} />
+                    My Account <FaAngleDown size={12} />
                   </span>
                 </div>
                 {showLogin && (
@@ -98,13 +111,8 @@ export default function Navbar() {
                     style={{ position: "absolute", top: "100%" }}
                   >
                     <button className="dropdown-item">My Profile</button>
-                    <button className="dropdown-item">SuperCoin Zone</button>
-                    <button className="dropdown-item">Flipkart Plus Zone</button>
                     <button className="dropdown-item">Orders</button>
-                    <button className="dropdown-item">Coupons</button>
-                    <button className="dropdown-item">Gift Cards</button>
-                    <button className="dropdown-item">Notifications</button>
-                    <button className="dropdown-item">Log Out</button>
+                    <button className="dropdown-item">Wishlist</button>
                   </div>
                 )}
               </div>
@@ -113,39 +121,44 @@ export default function Navbar() {
                 <>
                   <Link
                     href="/cart"
-                    className="d-flex align-items-center gap-2 text-decoration-none text-dark"
+                    className={`d-flex align-items-center gap-2 text-decoration-none ${
+                      isBlueBg ? "text-white" : "text-dark"
+                    }`}
                     style={{ fontSize: "16px", padding: "8px 12px" }}
                   >
                     <FaShoppingCart size={20} />
                     <span>Cart</span>
                   </Link>
                   <div
-                    className="d-flex align-items-center gap-2 cursor-pointer"
+                    className={`d-flex align-items-center gap-2 cursor-pointer ${
+                      isBlueBg ? "text-white" : "text-dark"
+                    }`}
                     style={{ fontSize: "16px", padding: "8px 12px" }}
                   >
                     <FaStore size={20} />
                     <span>Become a Seller</span>
                   </div>
-
                   <div
                     className="position-relative"
                     onMouseEnter={() => setShowMore(true)}
                     onMouseLeave={() => setShowMore(false)}
                   >
                     <div
-                      className="d-flex align-items-center cursor-pointer"
+                      className={`d-flex align-items-center cursor-pointer ${
+                        isBlueBg ? "text-white" : "text-dark"
+                      }`}
                       style={{ padding: "8px 12px" }}
                     >
                       <FaEllipsisV size={18} />
                     </div>
+
                     {showMore && (
                       <div
                         className="dropdown-menu show mt-2 shadow-sm"
                         style={{ position: "absolute", top: "100%", right: 0 }}
                       >
-                        <button className="dropdown-item">Notification Preferences</button>
-                        <button className="dropdown-item">24X7 Customer Care</button>
-                        <button className="dropdown-item">Advertise</button>
+                        <button className="dropdown-item">Notifications</button>
+                        <button className="dropdown-item">Customer Care</button>
                         <button className="dropdown-item">Download App</button>
                       </div>
                     )}
