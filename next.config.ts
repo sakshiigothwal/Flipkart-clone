@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
         hostname: "rukminim2.flixcart.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "static-assets-web.flixcart.com",
+        pathname: "/**",
+      },
     ],
   },
 };
